@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import jquery from 'jquery'
 import styles from './test.module.css'
+import './test.scss'
 
 const Layout = () => {
   useEffect(() => {

@@ -1,6 +1,6 @@
 const path = require("path")
 
-// webpack
+// webpack prod
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
@@ -13,16 +13,16 @@ module.exports = {
     main: path.resolve(rootDir, 'index.js'),
   },
   output: {
-    path: path.resolve(rootDir, 'assets'),
-    filename: '[name].bundle.js',
+    path: path.resolve(rootDir, './assets'),
+    filename: '2b.bundle.js',
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].bundle.css',
+      filename: '2b.bundle.css',
     }),
-    // new webpack.DefinePlugin({
-    //   SOCKET_URL: JSON.stringify(process.env.SOCKET_URL),
-    // }),
+    new webpack.DefinePlugin({
+      LINK_FETCH: JSON.stringify('/apps/2b-offspring'),
+    }),
   ],
   optimization: {
     minimizer: [
@@ -61,16 +61,27 @@ module.exports = {
         },
       },
       {
-        test: /\.css$/,
+        test: /\.(s?)[ac]ss$/i,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: { sourceMap: true }
+          },
+          {
+            loader: 'sass-loader',
+            options: { sourceMap: true }
+          }
         ],
       }
     ],
   },
+  // watchOptions: {
+  //   aggregateTimeout: 5000,
+  //   poll: 1000,
+  // },
   mode: 'production',
   // mode: 'development',
   // devtool: "inline-source-map",
-  // watch: true
+  watch: true,
 }
